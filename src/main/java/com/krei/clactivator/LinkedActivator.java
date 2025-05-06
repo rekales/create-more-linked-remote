@@ -11,7 +11,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-// The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(LinkedActivator.MODID)
 public class LinkedActivator {
     public static final String MODID = "createlinkedactivator";
