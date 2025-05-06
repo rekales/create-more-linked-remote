@@ -1,0 +1,93 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "Client",
+      "presentation": {
+        "group": "Mod Development - create-linked-activator",
+        "order": 0
+      },
+      "projectName": "create-linked-activator",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@/home/krei/Documents/Projects/create-linked-activator/build/moddev/clientRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@/home/krei/Documents/Projects/create-linked-activator/build/moddev/clientRunVmArgs.txt",
+        "-Dfml.modFolders\u003dcreatelinkedactivator%%/home/krei/Documents/Projects/create-linked-activator/bin/main"
+      ],
+      "cwd": "${workspaceFolder}/run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "Data",
+      "presentation": {
+        "group": "Mod Development - create-linked-activator",
+        "order": 1
+      },
+      "projectName": "create-linked-activator",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@/home/krei/Documents/Projects/create-linked-activator/build/moddev/dataRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@/home/krei/Documents/Projects/create-linked-activator/build/moddev/dataRunVmArgs.txt",
+        "-Dfml.modFolders\u003dcreatelinkedactivator%%/home/krei/Documents/Projects/create-linked-activator/bin/main"
+      ],
+      "cwd": "${workspaceFolder}/run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "GameTestServer",
+      "presentation": {
+        "group": "Mod Development - create-linked-activator",
+        "order": 2
+      },
+      "projectName": "create-linked-activator",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@/home/krei/Documents/Projects/create-linked-activator/build/moddev/gameTestServerRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@/home/krei/Documents/Projects/create-linked-activator/build/moddev/gameTestServerRunVmArgs.txt",
+        "-Dfml.modFolders\u003dcreatelinkedactivator%%/home/krei/Documents/Projects/create-linked-activator/bin/main"
+      ],
+      "cwd": "${workspaceFolder}/run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "Server",
+      "presentation": {
+        "group": "Mod Development - create-linked-activator",
+        "order": 3
+      },
+      "projectName": "create-linked-activator",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@/home/krei/Documents/Projects/create-linked-activator/build/moddev/serverRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@/home/krei/Documents/Projects/create-linked-activator/build/moddev/serverRunVmArgs.txt",
+        "-Dfml.modFolders\u003dcreatelinkedactivator%%/home/krei/Documents/Projects/create-linked-activator/bin/main"
+      ],
+      "cwd": "${workspaceFolder}/run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    }
+  ]
+}
