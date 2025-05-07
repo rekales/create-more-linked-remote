@@ -1,4 +1,4 @@
-package com.krei.clactivator;
+package com.krei.createlinkedactivator;
 
 import org.slf4j.Logger;
 
@@ -18,7 +18,7 @@ public class LinkedActivator {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
-    public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("linkedactivator");
+    public static final DeferredItem<Item> LINKED_ACTIVATOR_ITEM = ITEMS.registerItem("linked_activator", LinkedActivatorItem::new);
 
     public LinkedActivator(IEventBus modEventBus, ModContainer modContainer) {
         ITEMS.register(modEventBus);
