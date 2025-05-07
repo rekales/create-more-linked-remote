@@ -120,7 +120,8 @@ configurations {
 
 dependencies {
     implementation "com.simibubi.create:create-${minecraft_version}:${create_version}"
- }
+    implementation "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
+}
 
 // This block of code expands all declared replace properties in the specified resource targets.
 // A missing property will result in an error. Properties are expanded using ${} Groovy notation.
