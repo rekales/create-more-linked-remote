@@ -121,6 +121,7 @@ dependencies {
     implementation "com.simibubi.create:create-${minecraft_version}:${create_version}"
     implementation "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
     implementation "net.neoforged:neoforge:${neo_version}"
+    jarJar implementation("com.tterrag.registrate:Registrate:${registrate_version}")
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
