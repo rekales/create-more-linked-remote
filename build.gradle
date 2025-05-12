@@ -122,6 +122,13 @@ dependencies {
     implementation "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
     implementation "net.neoforged:neoforge:${neo_version}"
     jarJar implementation("com.tterrag.registrate:Registrate:${registrate_version}")
+    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${flywheel_minecraft_version}:${flywheel_version}")
+    runtimeOnly(jarJar("dev.engine-room.flywheel:flywheel-neoforge-${flywheel_minecraft_version}:${flywheel_version}") {
+        version {
+            strictly "[1.0,2.0)"
+            prefer flywheel_version
+        }
+    })
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

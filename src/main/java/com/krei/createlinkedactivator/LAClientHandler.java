@@ -17,11 +17,17 @@ public class LAClientHandler {
     public static void clientTick(ClientTickEvent.Pre event) {
         Player player = Minecraft.getInstance().player;
         if (player != null 
-            && player.getMainHandItem().getItem() instanceof LinkedActivatorItem
-            && !Minecraft.getInstance().isPaused()) {
-            // CatnipServices.NETWORK.sendToServer(new LAInputPacket(true));
-            PacketDistributor.sendToServer(new LAInputPacket(Minecraft.getInstance().options.keyUse.isDown()));
-        } // TODO: Check for offhand without overriding
+                && player.getMainHandItem().getItem() instanceof LinkedActivatorItem
+                && !Minecraft.getInstance().isPaused()) {
+            if (!player.isCrouching()) {
+                // CatnipServices.NETWORK.sendToServer(new LAInputPacket(true));
+                PacketDistributor.sendToServer(new LAInputPacket(Minecraft.getInstance().options.keyUse.isDown()));  // TODO: Check for offhand without overriding
+            } else {
+                
+            }
+        
+
+        }
     }
 
     

@@ -60,6 +60,10 @@ public class LAServerHandler implements IPayloadHandler<LAInputPacket>{
         ItemStack stack = player.getMainHandItem();  // TODO: Check for offhand or add handedness in packet
 
         if (packet.activated()) {
+            if (player.isCrouching()){
+                
+            }
+
             MobileLinkEntry entry;
             if (map.containsKey(player.getUUID())) {
                 entry = map.get(player.getUUID());
