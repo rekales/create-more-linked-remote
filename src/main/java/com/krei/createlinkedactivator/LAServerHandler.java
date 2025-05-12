@@ -1,7 +1,5 @@
 package com.krei.createlinkedactivator;
 
-import static com.krei.createlinkedactivator.LinkedActivator.*;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -11,7 +9,6 @@ import java.util.UUID;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.redstone.link.IRedstoneLinkable;
 import com.simibubi.create.content.redstone.link.RedstoneLinkNetworkHandler.Frequency;
-import com.simibubi.create.content.redstone.link.controller.LinkedControllerServerHandler;
 
 import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.data.WorldAttached;
