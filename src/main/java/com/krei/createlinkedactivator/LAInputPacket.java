@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 public record LAInputPacket(boolean activated) implements CustomPacketPayload {
 
     public static final CustomPacketPayload.Type<LAInputPacket> TYPE = 
-            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(MODID, "pressed_data"));
+            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(MODID, "activated_packet"));
 
     public static final StreamCodec<ByteBuf, LAInputPacket> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.BOOL, LAInputPacket::activated, LAInputPacket::new);
 

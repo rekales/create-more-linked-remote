@@ -1,7 +1,5 @@
 package com.krei.createlinkedactivator;
 
-import static com.krei.createlinkedactivator.LinkedActivator.*;
-
 import java.util.LinkedList;
 
 import javax.annotation.Nullable;
@@ -30,58 +28,59 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
-@SuppressWarnings({"unused", "null"}) // Remove later
+@SuppressWarnings({ "unused", "null" }) // Remove later
 public class LinkedActivatorItem extends Item implements MenuProvider {
     public LinkedActivatorItem(Properties properties) {
-        super(properties.component(LINKED_ACTIVATOR_ITEMS_DC.get(), ItemContainerContents.EMPTY));
+        super(properties.component(LinkedActivator.ITEM_DATA_COMPONENT.get(), ItemContainerContents.EMPTY));
     }
 
     public static Couple<Frequency> getNetworkKey(ItemStack stack) {
-        if (!stack.has(LINKED_ACTIVATOR_ITEMS_DC))
-			return Couple.create(Frequency.EMPTY, Frequency.EMPTY);
+        if (!stack.has(LinkedActivator.ITEM_DATA_COMPONENT))
+            return Couple.create(Frequency.EMPTY, Frequency.EMPTY);
 
         ItemStackHandler newInv = getFrequencyItems(stack);
-		return Couple.create(Frequency.of(newInv.getStackInSlot(0)),
-			Frequency.of(newInv.getStackInSlot(1)));
+        return Couple.create(Frequency.of(newInv.getStackInSlot(0)),
+                Frequency.of(newInv.getStackInSlot(1)));
     }
 
     public static ItemStackHandler getFrequencyItems(ItemStack stack) {
-        if (LINKED_ACTIVATOR_ITEM.get() != stack.getItem())
+        if (!LinkedActivator.ITEM.isIn(stack))
             throw new IllegalArgumentException("Cannot get frequency items from non-activator: " + stack);
         ItemStackHandler newInv = new ItemStackHandler(2);
-		ItemHelper.fillItemStackHandler(stack.getOrDefault(LINKED_ACTIVATOR_ITEMS_DC, ItemContainerContents.EMPTY), newInv);
+        ItemHelper.fillItemStackHandler(stack.getOrDefault(LinkedActivator.ITEM_DATA_COMPONENT, ItemContainerContents.EMPTY), newInv);
         return newInv;
     }
 
     public static void setFrequencyItems(ItemStack stack, ItemStackHandler inv) {
-        if (LINKED_ACTIVATOR_ITEM.get() != stack.getItem())
+        if (!LinkedActivator.ITEM.isIn(stack))
             throw new IllegalArgumentException("Cannot set frequency items from non-activator: " + stack);
-        stack.set(LINKED_ACTIVATOR_ITEMS_DC, ItemHelper.containerContentsFromHandler(inv));
+        stack.set(LinkedActivator.ITEM_DATA_COMPONENT, ItemHelper.containerContentsFromHandler(inv));
     }
 
     @Override
     @Nullable
     public AbstractContainerMenu createMenu(int id, Inventory inv, Player player) {
-		ItemStack heldItem = player.getMainHandItem();
-		return LinkedActivatorMenu.create(id, inv, heldItem);
+        ItemStack heldItem = player.getMainHandItem();
+        return LinkedActivatorMenu.create(id, inv, heldItem);
     }
 
     @Override
     public Component getDisplayName() {
-		return getDescription();
+        return getDescription();
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack heldItem = player.getItemInHand(usedHand);
-       	if (player.isShiftKeyDown() && usedHand == InteractionHand.MAIN_HAND) {
-			if (!level.isClientSide && player instanceof ServerPlayer && player.mayBuild())
-				player.openMenu(this, buf -> {
-					ItemStack.STREAM_CODEC.encode(buf, heldItem);
-				});
-			return InteractionResultHolder.success(heldItem);
-		}
+        if (player.isShiftKeyDown() && usedHand == InteractionHand.MAIN_HAND) {
+            if (!level.isClientSide && player instanceof ServerPlayer && player.mayBuild())
+                player.openMenu(this, buf -> {
+                    ItemStack.STREAM_CODEC.encode(buf, heldItem);
+                });
+            return InteractionResultHolder.success(heldItem);
+        }
         return super.use(level, player, usedHand);
+        // Activation at LAClientHandler
     }
 
 }

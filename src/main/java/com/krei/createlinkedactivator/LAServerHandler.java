@@ -24,16 +24,15 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.handling.IPayloadHandler;
 
-public class LAServerHandler implements IPayloadHandler<LAInputPacket>{
-    
-    public static WorldAttached<Map<UUID, MobileLinkEntry>> activeActors =
-    new WorldAttached<>($ -> new HashMap<>());
+public class LAServerHandler implements IPayloadHandler<LAInputPacket> {
+
+    public static WorldAttached<Map<UUID, MobileLinkEntry>> activeActors = new WorldAttached<>($ -> new HashMap<>());
 
     @SubscribeEvent
     public static void serverTick(ServerTickEvent.Post event) {
         for (LevelAccessor level : event.getServer().getAllLevels()) {
             Map<UUID, MobileLinkEntry> map = activeActors.get(level);
-            for (Iterator<Entry<UUID, MobileLinkEntry>> iterator = map.entrySet().iterator(); iterator.hasNext(); ) {
+            for (Iterator<Entry<UUID, MobileLinkEntry>> iterator = map.entrySet().iterator(); iterator.hasNext();) {
                 Entry<UUID, MobileLinkEntry> entry = iterator.next();
                 MobileLinkEntry mle = entry.getValue();
                 mle.tickTimeout();
@@ -53,15 +52,15 @@ public class LAServerHandler implements IPayloadHandler<LAInputPacket>{
     @Override
     public void handle(LAInputPacket packet, IPayloadContext context) {
         Player player = context.player();
-        if (player.getMainHandItem().getItem() != LINKED_ACTIVATOR_ITEM.get())
+        if (!LinkedActivator.ITEM.isIn(player.getMainHandItem()))
             return;
         LevelAccessor level = player.level();
         Map<UUID, MobileLinkEntry> map = activeActors.get(level);
-        ItemStack stack = player.getMainHandItem();  // TODO: Check for offhand or add handedness in packet
+        ItemStack stack = player.getMainHandItem(); // TODO: Check for offhand or add handedness in packet
 
         if (packet.activated()) {
-            if (player.isCrouching()){
-                
+            if (player.isCrouching()) {
+
             }
 
             MobileLinkEntry entry;
@@ -75,11 +74,10 @@ public class LAServerHandler implements IPayloadHandler<LAInputPacket>{
                 LOGGER.debug("added " + map.get(player.getUUID()));
             }
             Create.REDSTONE_LINK_NETWORK_HANDLER.addToNetwork(level, entry);
-        } else if (map.containsKey(player.getUUID())){
+        } else if (map.containsKey(player.getUUID())) {
             activeActors.get(level).get(player.getUUID()).zeroTimeout();
         }
     }
-        
 
     static class MobileLinkEntry implements IRedstoneLinkable {
         static final int DEFAULT_TIMEOUT = 10;
@@ -91,7 +89,7 @@ public class LAServerHandler implements IPayloadHandler<LAInputPacket>{
             this.netkey = netkey;
             this.pos = pos;
             this.timeout = DEFAULT_TIMEOUT;
-		}
+        }
 
         public void tickTimeout() {
             this.timeout--;

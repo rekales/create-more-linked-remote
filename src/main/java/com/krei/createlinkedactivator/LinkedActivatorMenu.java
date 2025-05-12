@@ -18,7 +18,7 @@ import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class LinkedActivatorMenu extends GhostItemMenu<ItemStack> {
 
-    public LinkedActivatorMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
+	public LinkedActivatorMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
 		super(type, id, inv, extraData);
 	}
 
@@ -27,7 +27,7 @@ public class LinkedActivatorMenu extends GhostItemMenu<ItemStack> {
 	}
 
 	public static LinkedActivatorMenu create(int id, Inventory inv, ItemStack filterItem) {
-		return new LinkedActivatorMenu(LINKED_ACTIVATOR_MENU.get(), id, inv, filterItem);
+		return new LinkedActivatorMenu(MENU.get(), id, inv, filterItem);
 	}
 
 	@Override
@@ -43,8 +43,8 @@ public class LinkedActivatorMenu extends GhostItemMenu<ItemStack> {
 	@Override
 	protected void addSlots() {
 		addPlayerSlots(8, 131);
-        addSlot(new SlotItemHandler(ghostInventory, 0, 12, 34));
-        addSlot(new SlotItemHandler(ghostInventory, 1, 12, 52));
+		addSlot(new SlotItemHandler(ghostInventory, 0, 12, 34));
+		addSlot(new SlotItemHandler(ghostInventory, 1, 12, 52));
 	}
 
 	@Override
@@ -69,5 +69,4 @@ public class LinkedActivatorMenu extends GhostItemMenu<ItemStack> {
 		return playerInventory.getSelected() == contentHolder;
 	}
 
-    
 }
