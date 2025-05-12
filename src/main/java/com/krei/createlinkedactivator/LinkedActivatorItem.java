@@ -1,12 +1,8 @@
 package com.krei.createlinkedactivator;
 
-import java.util.LinkedList;
-
 import javax.annotation.Nullable;
 
 import com.simibubi.create.content.redstone.link.RedstoneLinkNetworkHandler.Frequency;
-import com.simibubi.create.content.redstone.link.controller.LinkedControllerItem;
-import com.simibubi.create.content.redstone.link.controller.LinkedControllerMenu;
 import com.simibubi.create.foundation.item.ItemHelper;
 
 import net.createmod.catnip.data.Couple;
@@ -14,7 +10,6 @@ import net.createmod.catnip.data.Couple;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -24,11 +19,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import net.minecraft.world.item.component.ItemContainerContents;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
-@SuppressWarnings({ "unused", "null" }) // Remove later
+@SuppressWarnings({"null" }) // Remove later
 public class LinkedActivatorItem extends Item implements MenuProvider {
     public LinkedActivatorItem(Properties properties) {
         super(properties.component(LinkedActivator.ITEM_DATA_COMPONENT.get(), ItemContainerContents.EMPTY));
@@ -74,13 +68,10 @@ public class LinkedActivatorItem extends Item implements MenuProvider {
         ItemStack heldItem = player.getItemInHand(usedHand);
         if (player.isShiftKeyDown() && usedHand == InteractionHand.MAIN_HAND) {
             if (!level.isClientSide && player instanceof ServerPlayer && player.mayBuild())
-                player.openMenu(this, buf -> {
-                    ItemStack.STREAM_CODEC.encode(buf, heldItem);
-                });
+                player.openMenu(this, buf -> {ItemStack.STREAM_CODEC.encode(buf, heldItem);});
             return InteractionResultHolder.success(heldItem);
         }
         return super.use(level, player, usedHand);
-        // Activation at LAClientHandler
+        // Activation at LAClientHandler & LAServerHandler
     }
-
 }

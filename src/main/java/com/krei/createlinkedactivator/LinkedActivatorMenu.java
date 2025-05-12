@@ -2,10 +2,7 @@ package com.krei.createlinkedactivator;
 
 import static com.krei.createlinkedactivator.LinkedActivator.*;
 
-import com.simibubi.create.AllMenuTypes;
-import com.simibubi.create.content.redstone.link.controller.LinkedControllerItem;
 import com.simibubi.create.foundation.gui.menu.GhostItemMenu;
-import com.simibubi.create.foundation.item.ItemHelper;
 
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;

@@ -2,7 +2,6 @@ package com.krei.createlinkedactivator;
 
 import static com.krei.createlinkedactivator.LinkedActivator.*;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -12,6 +11,7 @@ import java.util.UUID;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.redstone.link.IRedstoneLinkable;
 import com.simibubi.create.content.redstone.link.RedstoneLinkNetworkHandler.Frequency;
+import com.simibubi.create.content.redstone.link.controller.LinkedControllerServerHandler;
 
 import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.data.WorldAttached;
@@ -37,18 +37,15 @@ public class LAServerHandler implements IPayloadHandler<LAInputPacket> {
                 MobileLinkEntry mle = entry.getValue();
                 mle.tickTimeout();
                 if (!mle.isAlive()) {
-                    LOGGER.debug("removed " + map.get(entry.getKey()));
+                    // LOGGER.debug("removed " + map.get(entry.getKey()));
                     map.remove(entry.getKey());
                     Create.REDSTONE_LINK_NETWORK_HANDLER.removeFromNetwork(level, mle);
                 }
             }
-
-            long time = level.getLevelData().getGameTime();
-            if (time % 100 == 1)
-                LOGGER.debug(level.toString() + map.keySet().toString());
         }
     }
 
+    @SuppressWarnings("null")
     @Override
     public void handle(LAInputPacket packet, IPayloadContext context) {
         Player player = context.player();
@@ -59,10 +56,6 @@ public class LAServerHandler implements IPayloadHandler<LAInputPacket> {
         ItemStack stack = player.getMainHandItem(); // TODO: Check for offhand or add handedness in packet
 
         if (packet.activated()) {
-            if (player.isCrouching()) {
-
-            }
-
             MobileLinkEntry entry;
             if (map.containsKey(player.getUUID())) {
                 entry = map.get(player.getUUID());
@@ -71,7 +64,7 @@ public class LAServerHandler implements IPayloadHandler<LAInputPacket> {
             } else {
                 entry = new MobileLinkEntry(LinkedActivatorItem.getNetworkKey(stack), player.blockPosition());
                 map.put(player.getUUID(), entry);
-                LOGGER.debug("added " + map.get(player.getUUID()));
+                // LOGGER.debug("added " + map.get(player.getUUID()));
             }
             Create.REDSTONE_LINK_NETWORK_HANDLER.addToNetwork(level, entry);
         } else if (map.containsKey(player.getUUID())) {

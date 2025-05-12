@@ -1,27 +1,20 @@
 package com.krei.createlinkedactivator;
 
-import static com.krei.createlinkedactivator.LinkedActivator.MODID;
 import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
 
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-import com.simibubi.create.Create;
-import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.IconButton;
-import com.simibubi.create.foundation.utility.ControlsUtil;
-import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.createmod.catnip.gui.TextureSheetSegment;
 import net.createmod.catnip.gui.UIRenderHelper;
 import net.createmod.catnip.gui.element.GuiGameElement;
 import net.createmod.catnip.gui.element.ScreenElement;
 import net.createmod.catnip.theme.Color;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
@@ -33,73 +26,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 
 public class LinkedActivatorScreen extends AbstractSimiContainerScreen<LinkedActivatorMenu>{
 
-	private enum AltGuiTextures  implements ScreenElement, TextureSheetSegment {
-		LINKED_ACTIVATOR("curiosities_2", 179, 109);
-
-			public static final int FONT_COLOR = 0x575F7A;
-
-		public final ResourceLocation location;
-		private final int width;
-		private final int height;
-		private final int startX;
-		private final int startY;
-
-		AltGuiTextures(String location, int width, int height) {
-			this(location, 0, 0, width, height);
-		}
-
-		AltGuiTextures(String location, int startX, int startY, int width, int height) {
-			this(MODID, location, startX, startY, width, height);
-		}
-
-		AltGuiTextures(String namespace, String location, int startX, int startY, int width, int height) {
-			this.location = ResourceLocation.fromNamespaceAndPath(namespace, "textures/gui/" + location + ".png");
-			this.width = width;
-			this.height = height;
-			this.startX = startX;
-			this.startY = startY;
-		}
-
-		@Override
-		public ResourceLocation getLocation() {
-			return location;
-		}
-
-		@OnlyIn(Dist.CLIENT)
-		public void render(GuiGraphics graphics, int x, int y) {
-			graphics.blit(location, x, y, startX, startY, width, height);
-		}
-
-		@OnlyIn(Dist.CLIENT)
-		public void render(GuiGraphics graphics, int x, int y, Color c) {
-			bind();
-			UIRenderHelper.drawColoredTexture(graphics, c, x, y, startX, startY, width, height);
-		}
-
-		@Override
-		public int getStartX() {
-			return startX;
-		}
-
-		@Override
-		public int getStartY() {
-			return startY;
-		}
-
-		@Override
-		public int getWidth() {
-			return width;
-		}
-
-		@Override
-		public int getHeight() {
-			return height;
-		}
-
-	}
-
-
-	protected AltGuiTextures background;
+	protected GuiTexture background;
 	private List<Rect2i> extraAreas = Collections.emptyList();
 
 	private IconButton resetButton;
@@ -107,8 +34,7 @@ public class LinkedActivatorScreen extends AbstractSimiContainerScreen<LinkedAct
 
     public LinkedActivatorScreen(LinkedActivatorMenu container, Inventory inv, Component title) {
         super(container, inv, title);
-		this.background = AltGuiTextures.LINKED_ACTIVATOR;
-
+		this.background = new GuiTexture(LinkedActivator.MODID, "curiosities_2", 179, 109);
     }
 
 	@Override
@@ -148,18 +74,17 @@ public class LinkedActivatorScreen extends AbstractSimiContainerScreen<LinkedAct
 		background.render(graphics, x, y);
 		graphics.drawString(font, title, x + 15, y + 4, 0x592424, false);
 
-
 		GuiGameElement.of(menu.contentHolder).<GuiGameElement.GuiRenderBuilder>at(x + background.getWidth() - 4, y + background.getHeight() - 56, -200)
 			.scale(4)
 			.render(graphics);
-
 	}
+
+	// TODO: Add Tooltips
 
 	@Override
 	protected void containerTick() {
 		if (!ItemStack.matches(menu.player.getMainHandItem(), menu.contentHolder))
 			menu.player.closeContainer();
-
 		super.containerTick();
 	}
 
@@ -167,5 +92,54 @@ public class LinkedActivatorScreen extends AbstractSimiContainerScreen<LinkedAct
 	public List<Rect2i> getExtraAreas() {
 		return extraAreas;
 	}
-    
+
+
+	private class GuiTexture implements ScreenElement, TextureSheetSegment {
+		private final ResourceLocation location;
+		private int width;
+		private int height;
+		
+		GuiTexture(String namespace, String location, int width, int height) {
+			this.location = ResourceLocation.fromNamespaceAndPath(namespace, "textures/gui/" + location + ".png");
+			this.width = width;
+			this.height = height;
+		}
+
+		@Override
+		public ResourceLocation getLocation() {
+			return location;
+		}
+
+		@Override
+		public int getStartX() {
+			return 0;
+		}
+
+		@Override
+		public int getWidth() {
+			return width;
+		}
+
+		@Override
+		public int getHeight() {
+			return height;
+		}
+
+		@Override
+		public int getStartY() {
+			return 0;
+		}
+
+		@Override
+		@OnlyIn(Dist.CLIENT)
+		public void render(GuiGraphics graphics, int x, int y) {
+			graphics.blit(location, x, y, 0, 0, width, height);
+		}
+
+		@OnlyIn(Dist.CLIENT)
+		public void render(GuiGraphics graphics, int x, int y, Color c) {
+			bind();
+			UIRenderHelper.drawColoredTexture(graphics, c, x, y, 0, 0, width, height);
+		}
+	}
 }
