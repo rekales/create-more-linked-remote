@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.AllCreativeModeTabs;
 import com.tterrag.registrate.Registrate;
-import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.MenuEntry;
 
 import net.minecraft.core.component.DataComponentType;
@@ -50,8 +49,9 @@ public class LinkedActivator {
     public LinkedActivator(IEventBus modEventBus, ModContainer modContainer) {
         ITEMS.register(modEventBus);
         DATA_COMPONENTS.register(modEventBus);
-        modEventBus.addListener(LinkedActivator::addToCreativeTabs);
         modEventBus.addListener(LinkedActivator::registerPackets);
+        modEventBus.addListener(LinkedActivator::addToCreativeTabs);
+        modEventBus.addListener(LAClientHandler::clientSetup);
         NeoForge.EVENT_BUS.register(LAClientHandler.class);
         NeoForge.EVENT_BUS.register(LAServerHandler.class);
     }
