@@ -2,11 +2,13 @@ package com.krei.createlinkedactivator;
 
 import java.util.function.Supplier;
 
+import net.minecraft.world.item.Item;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.registries.DeferredItem;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.AllCreativeModeTabs;
-import com.simibubi.create.content.redstone.link.controller.LinkedControllerItem;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.MenuEntry;
@@ -30,26 +32,25 @@ public class LinkedActivator {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public static final Registrate REGISTRATE = Registrate.create(MODID);
-    
-    public static final ItemEntry<LinkedActivatorItem> ITEM = REGISTRATE
-            .item("linked_activator", LinkedActivatorItem::new)
-            .properties(p -> p.stacksTo(1))
-            .tab(AllCreativeModeTabs.BASE_CREATIVE_TAB.getKey())
-            // .model(AssetLookup.itemModelWithPartials())
-            .register();
+
+    private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
+    public static final DeferredItem<Item> ITEM = ITEMS.registerItem("linked_activator", LinkedActivatorItem::new);
 
     private static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister
             .createDataComponents(Registries.DATA_COMPONENT_TYPE, MODID);
     public static final Supplier<DataComponentType<ItemContainerContents>> ITEM_DATA_COMPONENT = DATA_COMPONENTS
             .registerComponentType(
-                    "linked_activator_items", builder -> builder.persistent(ItemContainerContents.CODEC)
+                    "linked_activator_frequency", builder -> builder.persistent(ItemContainerContents.CODEC)
                             .networkSynchronized(ItemContainerContents.STREAM_CODEC));
 
+    // Replace with normal registration methods
     public static final MenuEntry<LinkedActivatorMenu> MENU = REGISTRATE
-            .menu("linked_activator", LinkedActivatorMenu::new, () -> LinkedActivatorScreen::new).register();
+            .menu("linked_activator_menu", LinkedActivatorMenu::new, () -> LinkedActivatorScreen::new).register();
 
     public LinkedActivator(IEventBus modEventBus, ModContainer modContainer) {
+        ITEMS.register(modEventBus);
         DATA_COMPONENTS.register(modEventBus);
+        modEventBus.addListener(LinkedActivator::addToCreativeTabs);
         modEventBus.addListener(LinkedActivator::registerPackets);
         NeoForge.EVENT_BUS.register(LAClientHandler.class);
         NeoForge.EVENT_BUS.register(LAServerHandler.class);
@@ -59,5 +60,12 @@ public class LinkedActivator {
     public static void registerPackets(final RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar("1");
         registrar.playToServer(LAInputPacket.TYPE, LAInputPacket.STREAM_CODEC, new LAServerHandler());
+    }
+
+    @SubscribeEvent
+    public static void addToCreativeTabs(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTab() == AllCreativeModeTabs.BASE_CREATIVE_TAB.get()) {
+            event.accept(ITEM.get());
+        }
     }
 }

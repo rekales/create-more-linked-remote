@@ -11,8 +11,8 @@ public class LAClientHandler {
     @SubscribeEvent
     public static void clientTick(ClientTickEvent.Pre event) {
         Player player = Minecraft.getInstance().player;
-        if (player != null 
-                && LinkedActivator.ITEM.isIn(player.getMainHandItem())
+        if (player != null
+                && player.getMainHandItem().is(LinkedActivator.ITEM)
                 && !Minecraft.getInstance().isPaused()) {
             if (!player.isCrouching()) {
                 PacketDistributor.sendToServer(new LAInputPacket(Minecraft.getInstance().options.keyUse.isDown()));  // TODO: Check for offhand without overriding

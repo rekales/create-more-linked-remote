@@ -25,7 +25,9 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 @SuppressWarnings({"null" }) // Remove later
 public class LinkedActivatorItem extends Item implements MenuProvider {
     public LinkedActivatorItem(Properties properties) {
-        super(properties.component(LinkedActivator.ITEM_DATA_COMPONENT.get(), ItemContainerContents.EMPTY));
+        super(properties
+                .stacksTo(1)
+                .component(LinkedActivator.ITEM_DATA_COMPONENT.get(), ItemContainerContents.EMPTY));
     }
 
     public static Couple<Frequency> getNetworkKey(ItemStack stack) {
@@ -38,7 +40,7 @@ public class LinkedActivatorItem extends Item implements MenuProvider {
     }
 
     public static ItemStackHandler getFrequencyItems(ItemStack stack) {
-        if (!LinkedActivator.ITEM.isIn(stack))
+        if (!stack.is(LinkedActivator.ITEM.get()))
             throw new IllegalArgumentException("Cannot get frequency items from non-activator: " + stack);
         ItemStackHandler newInv = new ItemStackHandler(2);
         ItemHelper.fillItemStackHandler(stack.getOrDefault(LinkedActivator.ITEM_DATA_COMPONENT, ItemContainerContents.EMPTY), newInv);
@@ -46,7 +48,7 @@ public class LinkedActivatorItem extends Item implements MenuProvider {
     }
 
     public static void setFrequencyItems(ItemStack stack, ItemStackHandler inv) {
-        if (!LinkedActivator.ITEM.isIn(stack))
+        if (!stack.is(LinkedActivator.ITEM.get()))
             throw new IllegalArgumentException("Cannot set frequency items from non-activator: " + stack);
         stack.set(LinkedActivator.ITEM_DATA_COMPONENT, ItemHelper.containerContentsFromHandler(inv));
     }

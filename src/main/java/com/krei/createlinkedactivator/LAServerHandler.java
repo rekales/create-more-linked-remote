@@ -46,7 +46,7 @@ public class LAServerHandler implements IPayloadHandler<LAInputPacket> {
     @Override
     public void handle(LAInputPacket packet, IPayloadContext context) {
         Player player = context.player();
-        if (!LinkedActivator.ITEM.isIn(player.getMainHandItem()))
+        if (!player.getMainHandItem().is(LinkedActivator.ITEM.get()))
             return;
         LevelAccessor level = player.level();
         Map<UUID, MobileLinkEntry> map = activeActors.get(level);
