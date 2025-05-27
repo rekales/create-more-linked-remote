@@ -23,6 +23,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 public class LinkedActivatorScreen extends AbstractSimiContainerScreen<LinkedActivatorMenu>{
 
@@ -34,7 +35,7 @@ public class LinkedActivatorScreen extends AbstractSimiContainerScreen<LinkedAct
 
     public LinkedActivatorScreen(LinkedActivatorMenu container, Inventory inv, Component title) {
         super(container, inv, title);
-		this.background = new GuiTexture(LinkedActivator.MODID, "curiosities_2", 179, 109);
+		this.background = new GuiTexture(LinkedActivator.MODID, "linked_activator_menu", 111, 101);
     }
 
 	@Override
@@ -63,7 +64,7 @@ public class LinkedActivatorScreen extends AbstractSimiContainerScreen<LinkedAct
 	}
 
 	@Override
-	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(@NotNull GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
 		int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth());
 		int invY = topPos + background.getHeight() + 4;
 		renderPlayerInventory(graphics, invX, invY);
@@ -72,9 +73,9 @@ public class LinkedActivatorScreen extends AbstractSimiContainerScreen<LinkedAct
 		int y = topPos;
 
 		background.render(graphics, x, y);
-		graphics.drawString(font, title, x + 15, y + 4, 0x592424, false);
+		graphics.drawString(font, title, x + 8, y + 4, 0x592424, false);
 
-		GuiGameElement.of(menu.contentHolder).<GuiGameElement.GuiRenderBuilder>at(x + background.getWidth() - 4, y + background.getHeight() - 56, -200)
+		GuiGameElement.of(menu.contentHolder).<GuiGameElement.GuiRenderBuilder>at(x + background.getWidth() - 8, y + background.getHeight() - 68, -200)
 			.scale(4)
 			.render(graphics);
 	}
@@ -94,10 +95,10 @@ public class LinkedActivatorScreen extends AbstractSimiContainerScreen<LinkedAct
 	}
 
 
-	private class GuiTexture implements ScreenElement, TextureSheetSegment {
+	private static class GuiTexture implements ScreenElement, TextureSheetSegment {
 		private final ResourceLocation location;
-		private int width;
-		private int height;
+		private final int width;
+		private final int height;
 		
 		GuiTexture(String namespace, String location, int width, int height) {
 			this.location = ResourceLocation.fromNamespaceAndPath(namespace, "textures/gui/" + location + ".png");
@@ -106,7 +107,7 @@ public class LinkedActivatorScreen extends AbstractSimiContainerScreen<LinkedAct
 		}
 
 		@Override
-		public ResourceLocation getLocation() {
+		public @NotNull ResourceLocation getLocation() {
 			return location;
 		}
 
