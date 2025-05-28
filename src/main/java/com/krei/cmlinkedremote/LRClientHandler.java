@@ -1,4 +1,4 @@
-package com.krei.createlinkedactivator;
+package com.krei.cmlinkedremote;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -9,23 +9,23 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-public class LAClientHandler {
+public class LRClientHandler {
 
     @SubscribeEvent
     public static void clientTick(ClientTickEvent.Pre event) {
         Player player = Minecraft.getInstance().player;
         if (player != null
-                && player.getMainHandItem().is(LinkedActivator.ITEM)
+                && player.getMainHandItem().is(LinkedRemote.ITEM)
                 && !Minecraft.getInstance().isPaused()) {
             if (!player.isCrouching()) {
-                PacketDistributor.sendToServer(new LAInputPacket(Minecraft.getInstance().options.keyUse.isDown()));  // TODO: Check for offhand without overriding
+                PacketDistributor.sendToServer(new LRInputPacket(Minecraft.getInstance().options.keyUse.isDown()));  // TODO: Check for offhand without overriding
             }
         }
     }
 
     public static void clientSetup(FMLClientSetupEvent event) {
 
-        ItemProperties.register(LinkedActivator.ITEM.get(), ResourceLocation.fromNamespaceAndPath(LinkedActivator.MODID, "active"),
+        ItemProperties.register(LinkedRemote.ITEM.get(), ResourceLocation.fromNamespaceAndPath(LinkedRemote.MODID, "active"),
                 (itemstack, level, entity, seed) -> entity != null
                         && entity.getMainHandItem().equals(itemstack)
                         && !Minecraft.getInstance().isPaused()

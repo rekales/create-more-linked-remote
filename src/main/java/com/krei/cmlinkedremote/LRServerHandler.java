@@ -1,4 +1,4 @@
-package com.krei.createlinkedactivator;
+package com.krei.cmlinkedremote;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,7 +21,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.handling.IPayloadHandler;
 
-public class LAServerHandler implements IPayloadHandler<LAInputPacket> {
+public class LRServerHandler implements IPayloadHandler<LRInputPacket> {
 
     public static WorldAttached<Map<UUID, MobileLinkEntry>> activeActors = new WorldAttached<>($ -> new HashMap<>());
 
@@ -44,9 +44,9 @@ public class LAServerHandler implements IPayloadHandler<LAInputPacket> {
 
     @SuppressWarnings("null")
     @Override
-    public void handle(LAInputPacket packet, IPayloadContext context) {
+    public void handle(LRInputPacket packet, IPayloadContext context) {
         Player player = context.player();
-        if (!player.getMainHandItem().is(LinkedActivator.ITEM.get()))
+        if (!player.getMainHandItem().is(LinkedRemote.ITEM.get()))
             return;
         LevelAccessor level = player.level();
         Map<UUID, MobileLinkEntry> map = activeActors.get(level);
@@ -59,7 +59,7 @@ public class LAServerHandler implements IPayloadHandler<LAInputPacket> {
                 entry.updatePosition(player.blockPosition());
                 entry.resetTimeout();
             } else {
-                entry = new MobileLinkEntry(LinkedActivatorItem.getNetworkKey(stack), player.blockPosition());
+                entry = new MobileLinkEntry(LinkedRemoteItem.getNetworkKey(stack), player.blockPosition());
                 map.put(player.getUUID(), entry);
                 // LOGGER.debug("added " + map.get(player.getUUID()));
             }

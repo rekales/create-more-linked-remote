@@ -1,4 +1,4 @@
-package com.krei.createlinkedactivator;
+package com.krei.cmlinkedremote;
 
 import java.util.function.Supplier;
 
@@ -25,42 +25,41 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-@Mod(LinkedActivator.MODID)
-public class LinkedActivator {
-    public static final String MODID = "createlinkedactivator";
+@Mod(LinkedRemote.MODID)
+public class LinkedRemote {
+    public static final String MODID = "cmlinkedremote";
     @SuppressWarnings("unused")
     public static final Logger LOGGER = LogUtils.getLogger();
 
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
-    public static final DeferredItem<Item> ITEM = ITEMS.registerItem("linked_activator", LinkedActivatorItem::new);
+    public static final DeferredItem<Item> ITEM = ITEMS.registerItem("linked_remote", LinkedRemoteItem::new);
 
     private static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister
             .createDataComponents(Registries.DATA_COMPONENT_TYPE, MODID);
     public static final Supplier<DataComponentType<ItemContainerContents>> ITEM_DATA_COMPONENT = DATA_COMPONENTS
             .registerComponentType(
-                    "linked_activator_frequency", builder -> builder.persistent(ItemContainerContents.CODEC)
+                    "linked_remote_frequency", builder -> builder.persistent(ItemContainerContents.CODEC)
                             .networkSynchronized(ItemContainerContents.STREAM_CODEC));
 
-
     private static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(BuiltInRegistries.MENU, MODID);
-    public static final Supplier<MenuType<LinkedActivatorMenu>> MENU = MENUS.register(
-            "linked_activator_menu", () -> IMenuTypeExtension.create(LinkedActivatorMenu::new));
+    public static final Supplier<MenuType<LinkedRemoteMenu>> MENU = MENUS.register(
+            "linked_remote_menu", () -> IMenuTypeExtension.create(LinkedRemoteMenu::new));
 
-    public LinkedActivator(IEventBus modEventBus, ModContainer modContainer) {
+    public LinkedRemote(IEventBus modEventBus, ModContainer modContainer) {
         ITEMS.register(modEventBus);
         DATA_COMPONENTS.register(modEventBus);
         MENUS.register(modEventBus);
-        modEventBus.addListener(LinkedActivator::registerPackets);
-        modEventBus.addListener(LinkedActivator::addToCreativeTabs);
-        modEventBus.addListener(LinkedActivator::registerScreens);
-        modEventBus.addListener(LAClientHandler::clientSetup);
-        NeoForge.EVENT_BUS.register(LAClientHandler.class);
-        NeoForge.EVENT_BUS.register(LAServerHandler.class);
+        modEventBus.addListener(LinkedRemote::registerPackets);
+        modEventBus.addListener(LinkedRemote::addToCreativeTabs);
+        modEventBus.addListener(LinkedRemote::registerScreens);
+        modEventBus.addListener(LRClientHandler::clientSetup);
+        NeoForge.EVENT_BUS.register(LRClientHandler.class);
+        NeoForge.EVENT_BUS.register(LRServerHandler.class);
     }
 
     private static void registerPackets(final RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar("1");
-        registrar.playToServer(LAInputPacket.TYPE, LAInputPacket.STREAM_CODEC, new LAServerHandler());
+        registrar.playToServer(LRInputPacket.TYPE, LRInputPacket.STREAM_CODEC, new LRServerHandler());
     }
 
     private static void addToCreativeTabs(BuildCreativeModeTabContentsEvent event) {
@@ -70,6 +69,6 @@ public class LinkedActivator {
     }
 
     private static void registerScreens(RegisterMenuScreensEvent event) {
-        event.register(MENU.get(), LinkedActivatorScreen::new);
+        event.register(MENU.get(), LinkedRemoteScreen::new);
     }
 }

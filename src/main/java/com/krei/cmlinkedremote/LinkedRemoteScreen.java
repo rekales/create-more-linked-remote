@@ -1,4 +1,4 @@
-package com.krei.createlinkedactivator;
+package com.krei.cmlinkedremote;
 
 import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
 
@@ -25,7 +25,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
-public class LinkedActivatorScreen extends AbstractSimiContainerScreen<LinkedActivatorMenu>{
+public class LinkedRemoteScreen extends AbstractSimiContainerScreen<LinkedRemoteMenu>{
 
 	protected GuiTexture background;
 	private List<Rect2i> extraAreas = Collections.emptyList();
@@ -33,9 +33,9 @@ public class LinkedActivatorScreen extends AbstractSimiContainerScreen<LinkedAct
 	private IconButton resetButton;
 	private IconButton confirmButton;
 
-    public LinkedActivatorScreen(LinkedActivatorMenu container, Inventory inv, Component title) {
+    public LinkedRemoteScreen(LinkedRemoteMenu container, Inventory inv, Component title) {
         super(container, inv, title);
-		this.background = new GuiTexture(LinkedActivator.MODID, "linked_activator_menu", 111, 101);
+		this.background = new GuiTexture(LinkedRemote.MODID, "linked_remote_menu", 111, 101);
     }
 
 	@Override

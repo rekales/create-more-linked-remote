@@ -1,4 +1,4 @@
-package com.krei.createlinkedactivator;
+package com.krei.cmlinkedremote;
 
 import javax.annotation.Nullable;
 
@@ -23,15 +23,15 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 @SuppressWarnings({"null" }) // Remove later
-public class LinkedActivatorItem extends Item implements MenuProvider {
-    public LinkedActivatorItem(Properties properties) {
+public class LinkedRemoteItem extends Item implements MenuProvider {
+    public LinkedRemoteItem(Properties properties) {
         super(properties
                 .stacksTo(1)
-                .component(LinkedActivator.ITEM_DATA_COMPONENT.get(), ItemContainerContents.EMPTY));
+                .component(LinkedRemote.ITEM_DATA_COMPONENT.get(), ItemContainerContents.EMPTY));
     }
 
     public static Couple<Frequency> getNetworkKey(ItemStack stack) {
-        if (!stack.has(LinkedActivator.ITEM_DATA_COMPONENT))
+        if (!stack.has(LinkedRemote.ITEM_DATA_COMPONENT))
             return Couple.create(Frequency.EMPTY, Frequency.EMPTY);
 
         ItemStackHandler newInv = getFrequencyItems(stack);
@@ -40,24 +40,24 @@ public class LinkedActivatorItem extends Item implements MenuProvider {
     }
 
     public static ItemStackHandler getFrequencyItems(ItemStack stack) {
-        if (!stack.is(LinkedActivator.ITEM.get()))
-            throw new IllegalArgumentException("Cannot get frequency items from non-activator: " + stack);
+        if (!stack.is(LinkedRemote.ITEM.get()))
+            throw new IllegalArgumentException("Cannot get frequency items from non-remote: " + stack);
         ItemStackHandler newInv = new ItemStackHandler(2);
-        ItemHelper.fillItemStackHandler(stack.getOrDefault(LinkedActivator.ITEM_DATA_COMPONENT, ItemContainerContents.EMPTY), newInv);
+        ItemHelper.fillItemStackHandler(stack.getOrDefault(LinkedRemote.ITEM_DATA_COMPONENT, ItemContainerContents.EMPTY), newInv);
         return newInv;
     }
 
     public static void setFrequencyItems(ItemStack stack, ItemStackHandler inv) {
-        if (!stack.is(LinkedActivator.ITEM.get()))
-            throw new IllegalArgumentException("Cannot set frequency items from non-activator: " + stack);
-        stack.set(LinkedActivator.ITEM_DATA_COMPONENT, ItemHelper.containerContentsFromHandler(inv));
+        if (!stack.is(LinkedRemote.ITEM.get()))
+            throw new IllegalArgumentException("Cannot set frequency items from non-remote: " + stack);
+        stack.set(LinkedRemote.ITEM_DATA_COMPONENT, ItemHelper.containerContentsFromHandler(inv));
     }
 
     @Override
     @Nullable
     public AbstractContainerMenu createMenu(int id, Inventory inv, Player player) {
         ItemStack heldItem = player.getMainHandItem();
-        return LinkedActivatorMenu.create(id, inv, heldItem);
+        return LinkedRemoteMenu.create(id, inv, heldItem);
     }
 
     @Override

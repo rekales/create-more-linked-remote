@@ -1,8 +1,7 @@
-package com.krei.createlinkedactivator;
+package com.krei.cmlinkedremote;
 
 import com.simibubi.create.foundation.gui.menu.GhostItemMenu;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -12,22 +11,22 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
-public class LinkedActivatorMenu extends GhostItemMenu<ItemStack> {
+public class LinkedRemoteMenu extends GhostItemMenu<ItemStack> {
 
-	public LinkedActivatorMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
+	public LinkedRemoteMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
 		super(type, id, inv, extraData);
 	}
 
-	public LinkedActivatorMenu(int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
-		this(LinkedActivator.MENU.get(), id, inv, extraData);
+	public LinkedRemoteMenu(int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
+		this(LinkedRemote.MENU.get(), id, inv, extraData);
 	}
 
-	public LinkedActivatorMenu(MenuType<?> type, int id, Inventory inv, ItemStack filterItem) {
+	public LinkedRemoteMenu(MenuType<?> type, int id, Inventory inv, ItemStack filterItem) {
 		super(type, id, inv, filterItem);
 	}
 
-	public static LinkedActivatorMenu create(int id, Inventory inv, ItemStack filterItem) {
-		return new LinkedActivatorMenu(LinkedActivator.MENU.get(), id, inv, filterItem);
+	public static LinkedRemoteMenu create(int id, Inventory inv, ItemStack filterItem) {
+		return new LinkedRemoteMenu(LinkedRemote.MENU.get(), id, inv, filterItem);
 	}
 
 	@Override
@@ -37,7 +36,7 @@ public class LinkedActivatorMenu extends GhostItemMenu<ItemStack> {
 
 	@Override
 	protected ItemStackHandler createGhostInventory() {
-		return LinkedActivatorItem.getFrequencyItems(contentHolder);
+		return LinkedRemoteItem.getFrequencyItems(contentHolder);
 	}
 
 	@Override
@@ -49,7 +48,7 @@ public class LinkedActivatorMenu extends GhostItemMenu<ItemStack> {
 
 	@Override
 	protected void saveData(ItemStack contentHolder) {
-		LinkedActivatorItem.setFrequencyItems(contentHolder, ghostInventory);
+		LinkedRemoteItem.setFrequencyItems(contentHolder, ghostInventory);
 	}
 
 	@Override

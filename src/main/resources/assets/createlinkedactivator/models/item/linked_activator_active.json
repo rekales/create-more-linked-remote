@@ -1,7 +1,0 @@
-{
-  "parent": "createlinkedactivator:item/linked_activator",
-  "textures": {
-    "11": "createlinkedactivator:item/linked_activator_active",
-    "particle": "createlinkedactivator:item/linked_activator_active"
-  }
-}
