@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.simibubi.create.content.redstone.link.RedstoneLinkNetworkHandler.Frequency;
 import com.simibubi.create.foundation.item.ItemHelper;
 
+import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import net.createmod.catnip.data.Couple;
 
 import net.minecraft.network.chat.Component;
@@ -20,7 +21,12 @@ import net.minecraft.world.item.ItemStack;
 
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.items.ItemStackHandler;
+
+import java.util.function.Consumer;
 
 @SuppressWarnings({"null" }) // Remove later
 public class LinkedRemoteItem extends Item implements MenuProvider {
@@ -75,5 +81,12 @@ public class LinkedRemoteItem extends Item implements MenuProvider {
         }
         return super.use(level, player, usedHand);
         // Activation at LAClientHandler & LAServerHandler
+    }
+
+    @SuppressWarnings("removal")
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(SimpleCustomRenderer.create(this, new LinkedRemoteItemRenderer()));
     }
 }

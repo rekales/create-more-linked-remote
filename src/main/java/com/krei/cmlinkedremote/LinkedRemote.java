@@ -52,7 +52,6 @@ public class LinkedRemote {
         modEventBus.addListener(LinkedRemote::registerPackets);
         modEventBus.addListener(LinkedRemote::addToCreativeTabs);
         modEventBus.addListener(LinkedRemote::registerScreens);
-        modEventBus.addListener(LRClientHandler::clientSetup);
         NeoForge.EVENT_BUS.register(LRClientHandler.class);
         NeoForge.EVENT_BUS.register(LRServerHandler.class);
     }

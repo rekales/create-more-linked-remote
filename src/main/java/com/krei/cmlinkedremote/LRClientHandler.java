@@ -13,6 +13,7 @@ public class LRClientHandler {
 
     @SubscribeEvent
     public static void clientTick(ClientTickEvent.Pre event) {
+        LinkedRemoteItemRenderer.tick();
         Player player = Minecraft.getInstance().player;
         if (player != null
                 && player.getMainHandItem().is(LinkedRemote.ITEM)
@@ -21,15 +22,5 @@ public class LRClientHandler {
                 PacketDistributor.sendToServer(new LRInputPacket(Minecraft.getInstance().options.keyUse.isDown()));  // TODO: Check for offhand without overriding
             }
         }
-    }
-
-    public static void clientSetup(FMLClientSetupEvent event) {
-
-        ItemProperties.register(LinkedRemote.ITEM.get(), ResourceLocation.fromNamespaceAndPath(LinkedRemote.MODID, "active"),
-                (itemstack, level, entity, seed) -> entity != null
-                        && entity.getMainHandItem().equals(itemstack)
-                        && !Minecraft.getInstance().isPaused()
-                        && !entity.isCrouching()
-                        && Minecraft.getInstance().options.keyUse.isDown() ? 1.0f : 0.0f);
     }
 }
