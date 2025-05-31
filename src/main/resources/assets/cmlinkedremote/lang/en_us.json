@@ -1,3 +1,8 @@
 {
-  "item.cmlinkedremote.linked_remote": "Linked Remote"
+  "item.cmlinkedremote.linked_remote": "Linked Remote",
+  "item.cmlinkedremote.linked_remote.tooltip.summary": "Grants _handheld_ _control_ over a _Redstone Link_ frequency.",
+  "item.cmlinkedremote.linked_remote.tooltip.condition1": "R-Click",
+  "item.cmlinkedremote.linked_remote.tooltip.behaviour1": "_Activates_ the remote.",
+  "item.cmlinkedremote.linked_remote.tooltip.condition2": "R-Click while Sneaking",
+  "item.cmlinkedremote.linked_remote.tooltip.behaviour2": "Opens the manual _Configuration Interface_."
 }

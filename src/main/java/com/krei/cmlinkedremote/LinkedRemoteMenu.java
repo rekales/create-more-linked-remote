@@ -41,9 +41,9 @@ public class LinkedRemoteMenu extends GhostItemMenu<ItemStack> {
 
 	@Override
 	protected void addSlots() {
-		addPlayerSlots(-25, 123);
-		addSlot(new SlotItemHandler(ghostInventory, 0, 43, 26));
-		addSlot(new SlotItemHandler(ghostInventory, 1, 43, 44));
+		addPlayerSlots(-30, 123);
+		addSlot(new SlotItemHandler(ghostInventory, 0, 38, 26));
+		addSlot(new SlotItemHandler(ghostInventory, 1, 38, 44));
 	}
 
 	@Override

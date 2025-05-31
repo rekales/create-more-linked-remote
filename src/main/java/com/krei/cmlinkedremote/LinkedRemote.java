@@ -2,13 +2,14 @@ package com.krei.cmlinkedremote;
 
 import java.util.function.Supplier;
 
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.registries.DeferredItem;
+import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.item.ItemDescription;
+import com.simibubi.create.foundation.item.KineticStats;
+import com.simibubi.create.foundation.item.TooltipModifier;
+import com.tterrag.registrate.builders.MenuBuilder;
+import com.tterrag.registrate.util.entry.ItemEntry;
+import com.tterrag.registrate.util.entry.MenuEntry;
+import net.createmod.catnip.lang.FontHelper;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -31,8 +32,19 @@ public class LinkedRemote {
     @SuppressWarnings("unused")
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
-    public static final DeferredItem<Item> ITEM = ITEMS.registerItem("linked_remote", LinkedRemoteItem::new);
+    public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID).defaultCreativeTab(AllCreativeModeTabs.BASE_CREATIVE_TAB.getKey());
+
+    static {
+        REGISTRATE.setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
+                .andThen(TooltipModifier.mapNull(KineticStats.create(item))));
+    }
+
+    public static final ItemEntry<LinkedRemoteItem> ITEM = REGISTRATE
+            .item("linked_remote", LinkedRemoteItem::new)
+            .register();
+    public static final MenuEntry<LinkedRemoteMenu> MENU = REGISTRATE
+            .menu("linked_remote", (MenuBuilder.ForgeMenuFactory<LinkedRemoteMenu>) LinkedRemoteMenu::new, () -> LinkedRemoteScreen::new)
+            .register();
 
     private static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister
             .createDataComponents(Registries.DATA_COMPONENT_TYPE, MODID);
@@ -41,17 +53,10 @@ public class LinkedRemote {
                     "linked_remote_frequency", builder -> builder.persistent(ItemContainerContents.CODEC)
                             .networkSynchronized(ItemContainerContents.STREAM_CODEC));
 
-    private static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(BuiltInRegistries.MENU, MODID);
-    public static final Supplier<MenuType<LinkedRemoteMenu>> MENU = MENUS.register(
-            "linked_remote_menu", () -> IMenuTypeExtension.create(LinkedRemoteMenu::new));
-
     public LinkedRemote(IEventBus modEventBus, ModContainer modContainer) {
-        ITEMS.register(modEventBus);
+        REGISTRATE.registerEventListeners(modEventBus);
         DATA_COMPONENTS.register(modEventBus);
-        MENUS.register(modEventBus);
         modEventBus.addListener(LinkedRemote::registerPackets);
-        modEventBus.addListener(LinkedRemote::addToCreativeTabs);
-        modEventBus.addListener(LinkedRemote::registerScreens);
         NeoForge.EVENT_BUS.register(LRClientHandler.class);
         NeoForge.EVENT_BUS.register(LRServerHandler.class);
     }
@@ -59,15 +64,5 @@ public class LinkedRemote {
     private static void registerPackets(final RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar("1");
         registrar.playToServer(LRInputPacket.TYPE, LRInputPacket.STREAM_CODEC, new LRServerHandler());
-    }
-
-    private static void addToCreativeTabs(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTab() == AllCreativeModeTabs.BASE_CREATIVE_TAB.get()) {
-            event.accept(ITEM.get());
-        }
-    }
-
-    private static void registerScreens(RegisterMenuScreensEvent event) {
-        event.register(MENU.get(), LinkedRemoteScreen::new);
     }
 }

@@ -35,7 +35,7 @@ public class LinkedRemoteScreen extends AbstractSimiContainerScreen<LinkedRemote
 
     public LinkedRemoteScreen(LinkedRemoteMenu container, Inventory inv, Component title) {
         super(container, inv, title);
-		this.background = new GuiTexture(LinkedRemote.MODID, "linked_remote_menu", 111, 101);
+		this.background = new GuiTexture(LinkedRemote.MODID, "linked_remote_menu", 101, 101);
     }
 
 	@Override
