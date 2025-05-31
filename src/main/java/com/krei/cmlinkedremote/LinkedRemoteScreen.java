@@ -75,12 +75,10 @@ public class LinkedRemoteScreen extends AbstractSimiContainerScreen<LinkedRemote
 		background.render(graphics, x, y);
 		graphics.drawString(font, title, x + 8, y + 4, 0x592424, false);
 
-		GuiGameElement.of(menu.contentHolder).<GuiGameElement.GuiRenderBuilder>at(x + background.getWidth() - 8, y + background.getHeight() - 68, -200)
-			.scale(4)
+		GuiGameElement.of(menu.contentHolder).<GuiGameElement.GuiRenderBuilder>at(x + background.getWidth() - 2, y + background.getHeight() - 60, -200)
+			.scale(5)
 			.render(graphics);
 	}
-
-	// TODO: Add Tooltips
 
 	@Override
 	protected void containerTick() {

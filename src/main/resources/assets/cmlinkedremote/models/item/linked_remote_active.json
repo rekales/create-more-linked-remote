@@ -1,7 +1,6 @@
 {
   "parent": "cmlinkedremote:item/linked_remote",
   "textures": {
-    "0": "cmlinkedremote:item/linked_remote_active",
-    "particle": "cmlinkedremote:item/linked_remote_active"
+    "0": "cmlinkedremote:item/linked_remote_active"
   }
 }
