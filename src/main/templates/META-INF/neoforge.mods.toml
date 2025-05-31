@@ -2,21 +2,20 @@ modLoader="javafml"
 loaderVersion="${loader_version_range}"
 license="${mod_license}"
 
-
 # A list of mods - how many allowed here is determined by the individual mod loader
-[[mods]] #mandatory
+[[mods]]
 modId="${mod_id}"
 version="${mod_version}"
 displayName="${mod_name}"
-#logoFile="examplemod.png" #Optional-A file name (in the root of the mod JAR) containing a logo for display
+logoFile="icon.png"
 authors="${mod_authors}"
 description='''${mod_description}'''
 
 
 [[dependencies.${mod_id}]]
-    modId="neoforge" #mandatory
-    type="required" #mandatory
-    versionRange="${neo_version_range}" #mandatory
+    modId="neoforge"
+    type="required"
+    versionRange="${neo_version_range}"
     ordering="NONE"
     side="BOTH"
 
