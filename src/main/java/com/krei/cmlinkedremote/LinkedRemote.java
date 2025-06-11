@@ -57,8 +57,8 @@ public class LinkedRemote {
         REGISTRATE.registerEventListeners(modEventBus);
         DATA_COMPONENTS.register(modEventBus);
         modEventBus.addListener(LinkedRemote::registerPackets);
-        NeoForge.EVENT_BUS.register(LRClientHandler.class);
-        NeoForge.EVENT_BUS.register(LRServerHandler.class);
+        // Client events at LRClientHandler
+        // Server events at LRServerHandler
     }
 
     private static void registerPackets(final RegisterPayloadHandlersEvent event) {

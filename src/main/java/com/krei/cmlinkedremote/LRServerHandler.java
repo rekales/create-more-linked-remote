@@ -17,10 +17,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.handling.IPayloadHandler;
 
+@EventBusSubscriber(modid=LinkedRemote.MODID)
 public class LRServerHandler implements IPayloadHandler<LRInputPacket> {
 
     public static WorldAttached<Map<UUID, MobileLinkEntry>> activeActors = new WorldAttached<>($ -> new HashMap<>());
