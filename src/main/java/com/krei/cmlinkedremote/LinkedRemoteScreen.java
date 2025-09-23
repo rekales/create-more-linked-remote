@@ -28,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 public class LinkedRemoteScreen extends AbstractSimiContainerScreen<LinkedRemoteMenu>{
 
 	protected GuiTexture background;
+    protected Component title;
 	private List<Rect2i> extraAreas = Collections.emptyList();
 
 	private IconButton resetButton;
@@ -36,6 +37,7 @@ public class LinkedRemoteScreen extends AbstractSimiContainerScreen<LinkedRemote
     public LinkedRemoteScreen(LinkedRemoteMenu container, Inventory inv, Component title) {
         super(container, inv, title);
 		this.background = new GuiTexture(LinkedRemote.MODID, "linked_remote_menu", 179, 101);
+        this.title = Component.translatable(LinkedRemote.MODID + ".gui.linked_remote.title");
     }
 
 	@Override
