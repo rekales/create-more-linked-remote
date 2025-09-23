@@ -4,5 +4,7 @@
   "item.cmlinkedremote.linked_remote.tooltip.condition1": "R-Click",
   "item.cmlinkedremote.linked_remote.tooltip.behaviour1": "_Activates_ the remote.",
   "item.cmlinkedremote.linked_remote.tooltip.condition2": "R-Click while Sneaking",
-  "item.cmlinkedremote.linked_remote.tooltip.behaviour2": "Opens the manual _Configuration Interface_."
+  "item.cmlinkedremote.linked_remote.tooltip.behaviour2": "Opens the manual _Configuration Interface_.",
+  "item.cmlinkedremote.linked_remote.tooltip.condition3": "R-Click while Sneaking on Redstone Link",
+  "item.cmlinkedremote.linked_remote.tooltip.behaviour3": "Copies the _Links' Frequency_."
 }

@@ -2,15 +2,21 @@ package com.krei.cmlinkedremote;
 
 import javax.annotation.Nullable;
 
+import com.krei.cmlinkedremote.mixin.RedstoneLinkBlockEntityAccessor;
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.content.redstone.link.LinkBehaviour;
+import com.simibubi.create.content.redstone.link.RedstoneLinkBlockEntity;
 import com.simibubi.create.content.redstone.link.RedstoneLinkNetworkHandler.Frequency;
 import com.simibubi.create.foundation.item.ItemHelper;
 
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import net.createmod.catnip.data.Couple;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -20,7 +26,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import net.minecraft.world.item.component.ItemContainerContents;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
@@ -34,6 +42,13 @@ public class LinkedRemoteItem extends Item implements MenuProvider {
         super(properties
                 .stacksTo(1)
                 .component(LinkedRemote.ITEM_DATA_COMPONENT.get(), ItemContainerContents.EMPTY));
+    }
+
+    public static void setNetworkKey(ItemStack stack, Couple<Frequency> key) {
+        ItemStackHandler newInv = new ItemStackHandler(2);
+        newInv.setStackInSlot(0, key.getFirst().getStack());
+        newInv.setStackInSlot(1, key.getSecond().getStack());
+        setFrequencyItems(stack, newInv);
     }
 
     public static Couple<Frequency> getNetworkKey(ItemStack stack) {
@@ -74,16 +89,42 @@ public class LinkedRemoteItem extends Item implements MenuProvider {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack heldItem = player.getItemInHand(usedHand);
-        if (player.isShiftKeyDown() && usedHand == InteractionHand.MAIN_HAND) {
-            if (!level.isClientSide && player instanceof ServerPlayer && player.mayBuild())
-                player.openMenu(this, buf -> {ItemStack.STREAM_CODEC.encode(buf, heldItem);});
-            return InteractionResultHolder.success(heldItem);
+        if (player.mayBuild()) {
+            if (player.isShiftKeyDown() && usedHand == InteractionHand.MAIN_HAND) {
+                if (!level.isClientSide && player instanceof ServerPlayer && player.mayBuild())
+                    player.openMenu(this, buf -> {ItemStack.STREAM_CODEC.encode(buf, heldItem);});
+                return InteractionResultHolder.success(heldItem);
+            }
         }
         return super.use(level, player, usedHand);
         // Activation at LAClientHandler & LAServerHandler
     }
 
-    @SuppressWarnings("removal")
+    public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext ctx) {
+        Player player = ctx.getPlayer();
+        if (player == null)
+            return InteractionResult.PASS;
+        Level world = ctx.getLevel();
+        BlockPos pos = ctx.getClickedPos();
+        BlockState hitState = world.getBlockState(pos);
+        InteractionHand usedHand = ctx.getHand();
+
+        if (player.mayBuild()) {
+            if (player.isShiftKeyDown() && usedHand == InteractionHand.MAIN_HAND) {
+                if (AllBlocks.REDSTONE_LINK.has(hitState)) {
+                    if (world.getBlockEntity(pos) instanceof RedstoneLinkBlockEntity rlbe) {
+                        LinkBehaviour link = ((RedstoneLinkBlockEntityAccessor) rlbe).getLink();
+                        LinkedRemoteItem.setNetworkKey(stack, link.getNetworkKey().copy());
+                        player.getCooldowns().addCooldown(this, 2);
+                        return InteractionResult.SUCCESS;
+                    }
+                }
+            }
+        }
+        return InteractionResult.PASS;
+    }
+
+        @SuppressWarnings("removal")
     @Override
     @OnlyIn(Dist.CLIENT)
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {

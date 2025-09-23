@@ -1,0 +1,10 @@
+{
+  "required": true,
+  "priority": 1000,
+  "package": "com.krei.cmlinkedremote.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "RedstoneLinkBlockEntityAccessor"
+  ],
+  "minVersion": "0.8.5"
+}

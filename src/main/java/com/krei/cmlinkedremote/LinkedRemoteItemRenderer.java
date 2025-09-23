@@ -21,7 +21,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
-public class LinkedRemoteItemRenderer  extends CustomRenderedItemModelRenderer {
+public class LinkedRemoteItemRenderer extends CustomRenderedItemModelRenderer {
     protected static final PartialModel POWERED = PartialModel.of(ResourceLocation.fromNamespaceAndPath(LinkedRemote.MODID, "item/linked_remote_active"));
     protected static final PartialModel BUTTON = PartialModel.of(Create.asResource("item/linked_controller/button"));
 

@@ -35,7 +35,7 @@ public class LinkedRemoteScreen extends AbstractSimiContainerScreen<LinkedRemote
 
     public LinkedRemoteScreen(LinkedRemoteMenu container, Inventory inv, Component title) {
         super(container, inv, title);
-		this.background = new GuiTexture(LinkedRemote.MODID, "linked_remote_menu", 101, 101);
+		this.background = new GuiTexture(LinkedRemote.MODID, "linked_remote_menu", 179, 101);
     }
 
 	@Override
@@ -47,12 +47,12 @@ public class LinkedRemoteScreen extends AbstractSimiContainerScreen<LinkedRemote
 		int x = leftPos;
 		int y = topPos;
 
-		resetButton = new IconButton(x + background.getWidth() - 62, y + background.getHeight() - 24, AllIcons.I_TRASH);
+		resetButton = new IconButton(x + background.getWidth() - 101, y + background.getHeight() - 24, AllIcons.I_TRASH);
 		resetButton.withCallback(() -> {
 			menu.clearContents();
 			menu.sendClearPacket();
 		});
-		confirmButton = new IconButton(x + background.getWidth() - 33, y + background.getHeight() - 24, AllIcons.I_CONFIRM);
+		confirmButton = new IconButton(x + background.getWidth() - 72, y + background.getHeight() - 24, AllIcons.I_CONFIRM);
 		confirmButton.withCallback(() -> {
 			minecraft.player.closeContainer();
 		});
@@ -60,7 +60,7 @@ public class LinkedRemoteScreen extends AbstractSimiContainerScreen<LinkedRemote
 		addRenderableWidget(resetButton);
 		addRenderableWidget(confirmButton);
 
-		extraAreas = ImmutableList.of(new Rect2i(x + background.getWidth() + 4, y + background.getHeight() - 44, 64, 56));
+		extraAreas = ImmutableList.of(new Rect2i(x + background.getWidth() - 36, y + background.getHeight() - 44, 64, 56));
 	}
 
 	@Override
@@ -73,9 +73,9 @@ public class LinkedRemoteScreen extends AbstractSimiContainerScreen<LinkedRemote
 		int y = topPos;
 
 		background.render(graphics, x, y);
-		graphics.drawString(font, title, x + 8, y + 4, 0x592424, false);
+		graphics.drawString(font, title, x + 47, y + 4, 0x592424, false);
 
-		GuiGameElement.of(menu.contentHolder).<GuiGameElement.GuiRenderBuilder>at(x + background.getWidth() - 2, y + background.getHeight() - 60, -200)
+		GuiGameElement.of(menu.contentHolder).<GuiGameElement.GuiRenderBuilder>at(x + background.getWidth() - 40, y + background.getHeight() - 60, -200)
 			.scale(5)
 			.render(graphics);
 	}
