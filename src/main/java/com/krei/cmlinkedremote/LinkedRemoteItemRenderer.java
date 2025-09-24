@@ -13,6 +13,7 @@ import dev.engine_room.flywheel.lib.transform.TransformStack;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
@@ -45,14 +46,20 @@ public class LinkedRemoteItemRenderer extends CustomRenderedItemModelRenderer {
                           ItemDisplayContext transformType, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
         float pt = AnimationTickHolder.getPartialTicks();
 
-        renderer.render(buttonOffset.getValue(pt) > .5f
+        float buttonOffsetVal = 0;
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null && ItemStack.matches(player.getMainHandItem(), stack)) {
+            buttonOffsetVal = buttonOffset.getValue(pt);
+        }
+
+        renderer.render(buttonOffsetVal > .5f
                 ? POWERED.get() : model.getOriginalModel(), light);
         var msr = TransformStack.of(ms);
         float s = 1 / 16f;
 
         BakedModel button = BUTTON.get();
         ms.pushPose();
-        msr.translate(4*s, 0*s, (1.825-0.45*buttonOffset.getValue(pt))*s);
+        msr.translate(4*s, 0*s, (1.825-0.45*buttonOffsetVal)*s);
         msr.scale(1, 1, 0.25f);
         renderer.renderSolid(button, light);
         ms.popPose();
