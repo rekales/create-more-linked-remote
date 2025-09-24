@@ -34,7 +34,7 @@ public class LinkedRemoteScreen extends AbstractSimiContainerScreen<LinkedRemote
 	private IconButton confirmButton;
 
     public LinkedRemoteScreen(LinkedRemoteMenu container, Inventory inv, Component title) {
-        super(container, inv, title);
+        super(container, inv, Component.translatable(LinkedRemote.MODID + ".gui.linked_remote.title"));
 		this.background = new GuiTexture(LinkedRemote.MODID, "linked_remote_menu", 179, 101);
     }
 
