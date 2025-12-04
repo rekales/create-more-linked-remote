@@ -1,23 +1,34 @@
 package com.krei.cmlinkedremote;
 
-import static com.krei.cmlinkedremote.LinkedRemote.*;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import java.util.function.Supplier;
 
-public record LRInputPacket(boolean activated) implements CustomPacketPayload {
+public class LRInputPacket {
+    private final boolean activated;
 
-    public static final CustomPacketPayload.Type<LRInputPacket> TYPE =
-            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(MODID, "activated_packet"));
-
-    public static final StreamCodec<ByteBuf, LRInputPacket> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.BOOL, LRInputPacket::activated, LRInputPacket::new);
-
-    @Override
-    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
-        return TYPE;
+    public LRInputPacket(boolean activated) {
+        this.activated = activated;
     }
-    
+
+    public LRInputPacket(FriendlyByteBuf buf) {
+        this.activated = buf.readBoolean();
+    }
+
+    public void encode(FriendlyByteBuf buf) {
+        buf.writeBoolean(activated);
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void handle(Supplier<NetworkEvent.Context> ctx) {
+        ctx.get().enqueueWork(() -> {
+            // Handle on server side
+            LRServerHandler.handlePacket(this, ctx.get().getSender());
+        });
+        ctx.get().setPacketHandled(true);
+    }
 }

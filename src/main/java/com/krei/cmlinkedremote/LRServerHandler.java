@@ -16,14 +16,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.tick.ServerTickEvent;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
-import net.neoforged.neoforge.network.handling.IPayloadHandler;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
-@EventBusSubscriber(modid=LinkedRemote.MODID)
-public class LRServerHandler implements IPayloadHandler<LRInputPacket> {
+@Mod.EventBusSubscriber(modid=LinkedRemote.MODID)
+public class LRServerHandler {
 
     public static WorldAttached<Map<UUID, MobileLinkEntry>> activeActors = new WorldAttached<>($ -> new HashMap<>());
 
@@ -44,17 +43,14 @@ public class LRServerHandler implements IPayloadHandler<LRInputPacket> {
         }
     }
 
-    @SuppressWarnings("null")
-    @Override
-    public void handle(LRInputPacket packet, IPayloadContext context) {
-        Player player = context.player();
+    public static void handlePacket(LRInputPacket packet, Player player) {
         if (!player.getMainHandItem().is(LinkedRemote.ITEM.get()))
             return;
         LevelAccessor level = player.level();
         Map<UUID, MobileLinkEntry> map = activeActors.get(level);
         ItemStack stack = player.getMainHandItem(); // TODO: Check for offhand or add handedness in packet
 
-        if (packet.activated()) {
+        if (packet.isActivated()) {
             MobileLinkEntry entry;
             if (map.containsKey(player.getUUID())) {
                 entry = map.get(player.getUUID());

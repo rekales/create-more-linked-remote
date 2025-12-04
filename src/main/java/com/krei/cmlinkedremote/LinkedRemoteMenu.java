@@ -2,7 +2,7 @@ package com.krei.cmlinkedremote;
 
 import com.simibubi.create.foundation.gui.menu.GhostItemMenu;
 
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickType;
@@ -30,7 +30,7 @@ public class LinkedRemoteMenu extends GhostItemMenu<ItemStack> {
 	}
 
 	@Override
-	protected ItemStack createOnClient(RegistryFriendlyByteBuf extraData) {
+	protected ItemStack createOnClient(FriendlyByteBuf extraData) {
 		return ItemStack.STREAM_CODEC.decode(extraData);
 	}
 
