@@ -27,8 +27,7 @@ dependencies {
     runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${property("minecraft_version")}:${property("flywheel_version")}")
     implementation("com.tterrag.registrate:Registrate:${property("registrate_version")}")
 
-    // Dev QOL
-    runtimeOnly("curse.maven:jei-238222:7270455")
+    implementation("mezz.jei:jei-${property("minecraft_version")}-neoforge:${property("jei_version")}")
 }
 
 neoForge {
