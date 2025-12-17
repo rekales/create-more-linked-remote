@@ -6,7 +6,6 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
-import com.tterrag.registrate.builders.MenuBuilder;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.MenuEntry;
 import net.createmod.catnip.lang.FontHelper;
@@ -26,13 +25,16 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+@SuppressWarnings("unused")
 @Mod(LinkedRemote.MOD_ID)
 public class LinkedRemote {
     public static final String MOD_ID = "cmlinkedremote";
     @SuppressWarnings("unused")
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID).defaultCreativeTab(AllCreativeModeTabs.BASE_CREATIVE_TAB.getKey());
+    public static final CreateRegistrate REGISTRATE = CreateRegistrate
+            .create(MOD_ID)
+            .defaultCreativeTab(AllCreativeModeTabs.BASE_CREATIVE_TAB.getKey());
 
     static {
         REGISTRATE.setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
@@ -42,12 +44,14 @@ public class LinkedRemote {
     public static final ItemEntry<LinkedRemoteItem> ITEM = REGISTRATE
             .item("linked_remote", LinkedRemoteItem::new)
             .register();
+
     public static final MenuEntry<LinkedRemoteMenu> MENU = REGISTRATE
-            .menu("linked_remote", (MenuBuilder.ForgeMenuFactory<LinkedRemoteMenu>) LinkedRemoteMenu::new, () -> LinkedRemoteScreen::new)
+            .menu("linked_remote", LinkedRemoteMenu::new, () -> LinkedRemoteScreen::new)
             .register();
 
     private static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister
             .createDataComponents(Registries.DATA_COMPONENT_TYPE, MOD_ID);
+
     public static final Supplier<DataComponentType<ItemContainerContents>> ITEM_DATA_COMPONENT = DATA_COMPONENTS
             .registerComponentType(
                     "linked_remote_frequency", builder -> builder.persistent(ItemContainerContents.CODEC)

@@ -17,10 +17,6 @@ public class LinkedRemoteMenu extends GhostItemMenu<ItemStack> {
 		super(type, id, inv, extraData);
 	}
 
-	public LinkedRemoteMenu(int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
-		this(LinkedRemote.MENU.get(), id, inv, extraData);
-	}
-
 	public LinkedRemoteMenu(MenuType<?> type, int id, Inventory inv, ItemStack filterItem) {
 		super(type, id, inv, filterItem);
 	}

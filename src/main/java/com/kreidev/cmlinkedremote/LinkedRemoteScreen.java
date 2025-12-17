@@ -11,29 +11,26 @@ import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.IconButton;
 
 import net.createmod.catnip.gui.TextureSheetSegment;
-import net.createmod.catnip.gui.UIRenderHelper;
 import net.createmod.catnip.gui.element.GuiGameElement;
 import net.createmod.catnip.gui.element.ScreenElement;
-import net.createmod.catnip.theme.Color;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
+@OnlyIn(Dist.CLIENT)
 public class LinkedRemoteScreen extends AbstractSimiContainerScreen<LinkedRemoteMenu>{
 
-	protected GuiTexture background;
+	protected LinkedRemoteScreen.GuiTexture background;
 	private List<Rect2i> extraAreas = Collections.emptyList();
 
-	private IconButton resetButton;
-	private IconButton confirmButton;
-
-    public LinkedRemoteScreen(LinkedRemoteMenu container, Inventory inv, Component title) {
+    public LinkedRemoteScreen(LinkedRemoteMenu container, Inventory inv, Component ignoredTitle) {
         super(container, inv, Component.translatable(LinkedRemote.MOD_ID + ".gui.linked_remote.title"));
 		this.background = new GuiTexture(LinkedRemote.MOD_ID, "linked_remote_menu", 179, 101);
     }
@@ -47,14 +44,16 @@ public class LinkedRemoteScreen extends AbstractSimiContainerScreen<LinkedRemote
 		int x = leftPos;
 		int y = topPos;
 
-		resetButton = new IconButton(x + background.getWidth() - 101, y + background.getHeight() - 24, AllIcons.I_TRASH);
+        IconButton resetButton = new IconButton(x + background.getWidth() - 101, y + background.getHeight() - 24, AllIcons.I_TRASH);
 		resetButton.withCallback(() -> {
 			menu.clearContents();
 			menu.sendClearPacket();
 		});
-		confirmButton = new IconButton(x + background.getWidth() - 72, y + background.getHeight() - 24, AllIcons.I_CONFIRM);
+        IconButton confirmButton = new IconButton(x + background.getWidth() - 72, y + background.getHeight() - 24, AllIcons.I_CONFIRM);
 		confirmButton.withCallback(() -> {
-			minecraft.player.closeContainer();
+            if (getMinecraft().player instanceof Player player) {
+                player.closeContainer();
+            }
 		});
 
 		addRenderableWidget(resetButton);
@@ -93,7 +92,7 @@ public class LinkedRemoteScreen extends AbstractSimiContainerScreen<LinkedRemote
 	}
 
 
-	private static class GuiTexture implements ScreenElement, TextureSheetSegment {
+	protected static class GuiTexture implements ScreenElement, TextureSheetSegment {
 		private final ResourceLocation location;
 		private final int width;
 		private final int height;
@@ -130,15 +129,8 @@ public class LinkedRemoteScreen extends AbstractSimiContainerScreen<LinkedRemote
 		}
 
 		@Override
-		@OnlyIn(Dist.CLIENT)
 		public void render(GuiGraphics graphics, int x, int y) {
 			graphics.blit(location, x, y, 0, 0, width, height);
-		}
-
-		@OnlyIn(Dist.CLIENT)
-		public void render(GuiGraphics graphics, int x, int y, Color c) {
-			bind();
-			UIRenderHelper.drawColoredTexture(graphics, c, x, y, 0, 0, width, height);
 		}
 	}
 }

@@ -6,6 +6,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import org.jetbrains.annotations.NotNull;
 
 public record LRInputPacket(boolean activated) implements CustomPacketPayload {
 
@@ -15,7 +16,7 @@ public record LRInputPacket(boolean activated) implements CustomPacketPayload {
     public static final StreamCodec<ByteBuf, LRInputPacket> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.BOOL, LRInputPacket::activated, LRInputPacket::new);
 
     @Override
-    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
+    public CustomPacketPayload.@NotNull Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
     

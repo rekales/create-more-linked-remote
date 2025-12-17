@@ -1,7 +1,6 @@
 package com.kreidev.cmlinkedremote;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
@@ -21,6 +20,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.handling.IPayloadHandler;
+import org.jetbrains.annotations.NotNull;
 
 @EventBusSubscriber(modid=LinkedRemote.MOD_ID)
 public class LRServerHandler implements IPayloadHandler<LRInputPacket> {
@@ -31,8 +31,7 @@ public class LRServerHandler implements IPayloadHandler<LRInputPacket> {
     public static void serverTick(ServerTickEvent.Post event) {
         for (LevelAccessor level : event.getServer().getAllLevels()) {
             Map<UUID, MobileLinkEntry> map = activeActors.get(level);
-            for (Iterator<Entry<UUID, MobileLinkEntry>> iterator = map.entrySet().iterator(); iterator.hasNext();) {
-                Entry<UUID, MobileLinkEntry> entry = iterator.next();
+            for (Entry<UUID, MobileLinkEntry> entry : map.entrySet()) {
                 MobileLinkEntry mle = entry.getValue();
                 mle.tickTimeout();
                 if (!mle.isAlive()) {
@@ -46,7 +45,7 @@ public class LRServerHandler implements IPayloadHandler<LRInputPacket> {
 
     @SuppressWarnings("null")
     @Override
-    public void handle(LRInputPacket packet, IPayloadContext context) {
+    public void handle(@NotNull LRInputPacket packet, IPayloadContext context) {
         Player player = context.player();
         if (!player.getMainHandItem().is(LinkedRemote.ITEM.get()))
             return;
@@ -71,10 +70,10 @@ public class LRServerHandler implements IPayloadHandler<LRInputPacket> {
         }
     }
 
-    static class MobileLinkEntry implements IRedstoneLinkable {
+    public static class MobileLinkEntry implements IRedstoneLinkable {
         static final int DEFAULT_TIMEOUT = 10;
         private int timeout;
-        private Couple<Frequency> netkey;
+        private final Couple<Frequency> netkey;
         private BlockPos pos;
 
         public MobileLinkEntry(Couple<Frequency> netkey, BlockPos pos) {
@@ -130,8 +129,8 @@ public class LRServerHandler implements IPayloadHandler<LRInputPacket> {
 
         @Override
         public String toString() {
-            return this.netkey.getFirst().getStack().getItem().toString() + " "
-                    + this.netkey.getSecond().getStack().getItem().toString();
+            return this.netkey.getFirst().getStack().getItem() + " "
+                    + this.netkey.getSecond().getStack().getItem();
         }
     }
 }

@@ -33,6 +33,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -76,23 +77,23 @@ public class LinkedRemoteItem extends Item implements MenuProvider {
 
     @Override
     @Nullable
-    public AbstractContainerMenu createMenu(int id, Inventory inv, Player player) {
+    public AbstractContainerMenu createMenu(int id, @NotNull Inventory inv, Player player) {
         ItemStack heldItem = player.getMainHandItem();
         return LinkedRemoteMenu.create(id, inv, heldItem);
     }
 
     @Override
-    public Component getDisplayName() {
+    public @NotNull Component getDisplayName() {
         return getDescription();
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand usedHand) {
         ItemStack heldItem = player.getItemInHand(usedHand);
         if (player.mayBuild()) {
             if (player.isShiftKeyDown() && usedHand == InteractionHand.MAIN_HAND) {
                 if (!level.isClientSide && player instanceof ServerPlayer && player.mayBuild())
-                    player.openMenu(this, buf -> {ItemStack.STREAM_CODEC.encode(buf, heldItem);});
+                    player.openMenu(this, buf -> ItemStack.STREAM_CODEC.encode(buf, heldItem));
                 return InteractionResultHolder.success(heldItem);
             }
         }
@@ -100,7 +101,7 @@ public class LinkedRemoteItem extends Item implements MenuProvider {
         // Activation at LAClientHandler & LAServerHandler
     }
 
-    public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext ctx) {
+    public @NotNull InteractionResult onItemUseFirst(@NotNull ItemStack stack, UseOnContext ctx) {
         Player player = ctx.getPlayer();
         if (player == null)
             return InteractionResult.PASS;
