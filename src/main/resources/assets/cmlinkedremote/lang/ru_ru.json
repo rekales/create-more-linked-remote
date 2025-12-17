@@ -1,0 +1,12 @@
+{
+  "item.cmlinkedremote.linked_remote": "Редстоуновый пульт",
+  "item.cmlinkedremote.linked_remote.tooltip.summary": "Предоставляет _ручной контроль_ над частотой _редстоунового передатчика_, присвоенной его _единственной кнопке_.",
+  "item.cmlinkedremote.linked_remote.tooltip.condition1": "ПКМ с предметом",
+  "item.cmlinkedremote.linked_remote.tooltip.behaviour1": "_Подаёт редстоун-сигнал_ на привязанную частоту.",
+  "item.cmlinkedremote.linked_remote.tooltip.condition2": "ПКМ крадучись",
+  "item.cmlinkedremote.linked_remote.tooltip.behaviour2": "Открывает _интерфейс конфигурации_.",
+  "item.cmlinkedremote.linked_remote.tooltip.condition3": "ПКМ крадучись по передатчику сигнала",
+  "item.cmlinkedremote.linked_remote.tooltip.behaviour3": "Привязывает кнопку к _частоте передатчика_.",
+
+  "cmlinkedremote.gui.linked_remote.title": "Выбор частоты"
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "cmlinkedremote:item/linked_remote",
+  "textures": {
+    "0": "cmlinkedremote:item/linked_remote_active"
+  }
+}
